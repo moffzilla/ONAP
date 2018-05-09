@@ -1,10 +1,10 @@
 ---
-- name: update cache
-  become: true
-  apt:
-      upgrade: yes
-      update_cache: yes
-      cache_valid_time: 86400
+#- name: update cache
+#  become: true
+#  apt:
+#      upgrade: yes
+#      update_cache: yes
+#      cache_valid_time: 86400
 
 - name: Install the packgaes
   become: true
@@ -12,7 +12,7 @@
       name: "{{ item }}"
       state: present
   with_items:
-      - ansible
+      - htop
       - git
       - curl
       - unzip

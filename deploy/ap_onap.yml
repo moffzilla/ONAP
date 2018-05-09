@@ -10,38 +10,52 @@
   gather_facts: false
 #  sudo: yes
   tasks:    
-    - name: partition new disk
-      shell: /bin/echo -e "n\np\n1\n\n\nw" | sudo fdisk /dev/xvdh
+#    - name: partition new disk
+#      shell: /bin/echo -e "n\np\n1\n\n\nw" | sudo fdisk /dev/xvdh
+
+    - parted:
+        device: /dev/xvdh
+        number: 1
+        state: present
+        part_end: 60GiB  
 
     - filesystem:
         fstype: ext4
         dev: /dev/xvdh1
 #        opts: -cc
 
-    - name: Creates Apache Mount directory
+    - name: Creates New Docker ONAP Mount directory
       file: 
-        path: /mnt/docker 
+        path: /mnt/onap 
         state: directory
         mode: "u=rwx,g=wx,o=rwx"
 
     - name: Mount New File System
-      shell: sudo mount /dev/xvdh1 /mnt/docker 
+      shell: sudo mount /dev/xvdh1 /mnt/onap 
 
     - name: Make Mount Point Permanent
       shell: |
-        echo '/dev/xvdh1    /mnt/docker    ext4    defaults    0    1' >> /etc/fstab
-      register: WelcomeONAP
+        echo '/dev/xvdh1    /mnt/onap    ext4    defaults    0    1' >> /etc/fstab
 
-    - name: Write Welcome Page
-      shell: |
-        echo 'Hello AWS World' > /mnt/docker/docker.txt
-      register: WelcomeApache
-
-#    - roles:
-#        - common 
-#        - docker
-#        - k8s
-#        - helm
-#        - oom
-
+    - name: Stop Docker
+      shell: sudo service docker stop  
     
+    - name: Move Default Docker image directory
+      shell: sudo mv /var/lib/docker /mnt/docker
+    
+    - name: Create Link
+      shell: sudo ln -s /mnt/docker /var/lib/docker
+
+    - name: Start Docker
+      shell: sudo service docker start
+
+    roles:
+      - common 
+      - docker
+#     - k8s
+#     - helm
+#     - oom
+
+
+  
+

@@ -22,8 +22,13 @@
     },
     "AnsiblePlaybook": {
       "Type": "String",
-      "Default": "deploy/ap_onap.yml",
+      "Default": "/home/ubuntu/ONAP/deploy/ap_onap.yml",
       "Description": "The Ansible playbook to use"
+    },
+    "AnsibleLocalDir": {
+      "Type": "String",
+      "Default": "/home/ubuntu/ONAP/deploy/ap_onap.yml",
+      "Description": "The Ansible Dest Folder"
     }
   },
   "Mappings": {
@@ -43,9 +48,9 @@
           "Fn::Base64": { "Fn::Join": [ "", [
             "#!/bin/bash\n",
             "sudo apt-get update -y\n",
-            "#sudo apt-get install -y ansible git\n",
-            "#echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
-            "#sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
+            "sudo apt-get install -y ansible git\n",
+            "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
+            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-d ", {"Ref": "AnsibleLocalDir"}," ",{"Ref": "AnsiblePlaybook"},"\n"
               ]
             ]
           }
@@ -55,7 +60,7 @@
 "NewVolume" : {
       "Type" : "AWS::EC2::Volume",
       "Properties" : {
-         "Size" : "1",
+         "Size" : "60",
          "AvailabilityZone" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ] }
       }
    },
