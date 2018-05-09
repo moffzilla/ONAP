@@ -51,7 +51,7 @@
             "sudo apt-get install -y ansible git\n",
             "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
             "#sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}, "-d" ," ",{"Ref": "AnsiblePlaybook"},"\n",
-            "sudo ansible-pull -U https://github.com/moffzilla/ONAP -d ONAP /home/ubuntu/ONAP/deploy/ap_onap.yml","\n",
+            "sudo ansible-pull -U https://github.com/moffzilla/ONAP -d ONAP /home/ubuntu/ONAP/deploy/ap_onap.yml\n",
             "#sudo git clone ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsibleLocalDir"},"\n",
             "#sudo ansible-playbook ONAP/deploy/ap_onap2.yml -vvvv --user=ubuntu","\n"
               ]
