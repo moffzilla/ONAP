@@ -4,16 +4,15 @@
 - name: Configure Secondary HDD & Configure Docker 
   hosts: localhost
   gather_facts: False
-  tasks:
   become: true
   remote_user: ubuntu
 
   roles:
     - common 
     - docker
-  # - k8s
-  # - helm
-  # - oom
+    - k8s
+    - helm
+    - oom
 
   tasks:
 #  sudo: yes   
