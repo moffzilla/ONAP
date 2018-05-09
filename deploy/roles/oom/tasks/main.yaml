@@ -1,0 +1,13 @@
+- name: Install oom
+  become: yes
+  git:
+    repo: https://git.onap.org/oom/
+    dest: /srv/oom
+    clone: yes
+
+- name: Install deployment scripts
+  become: yes
+  git:
+      repo: https://gitlab.com/zulcss/onap-deploy
+      dest: /srv/onap-deploy
+      clone: yes
