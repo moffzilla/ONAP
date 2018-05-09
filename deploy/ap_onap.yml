@@ -7,9 +7,16 @@
   tasks:
   become: true
   remote_user: ubuntu
-  gather_facts: false
-#  sudo: yes
-  tasks:    
+
+  roles:
+    - common 
+    - docker
+  # - k8s
+  # - helm
+  # - oom
+
+  tasks:
+#  sudo: yes   
     - name: partition new disk
       shell: /bin/echo -e "n\np\n1\n\n\nw" | sudo fdisk /dev/xvdh
 
@@ -31,14 +38,6 @@
       shell: |
         echo '/dev/xvdh1    /mnt/onap    ext4    defaults    0    1' >> /etc/fstab
 
-  roles:
-    - common 
-    - docker
-  # - k8s
-  # - helm
-  # - oom
-  
-  tasks:
     - name: Stop Docker
       shell: sudo service docker stop  
     
