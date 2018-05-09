@@ -1,5 +1,6 @@
 # ONAP
 This project creates a running EC2 instance at AWS then install Docker, Kubernetes and deploys ONAP by Helm Charts.
+Re-using roles and charts provided by zulcss.
  	
 ## Requirements
 
