@@ -1,0 +1,140 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Template to launch an Ubuntu Linux instance running Apache.",
+  "Parameters": {
+    "InstanceType": {
+      "Type": "String",
+      "Default": "t2.micro",
+      "AllowedValues": [
+        "t2.micro"
+      ],
+      "Description": "Only default t2.micro will be allowed"
+    },
+    "KeyName": {
+      "Type": "String",
+      "Default": "generic-cloud-wk",
+      "Description": "Enter the key pair name that you want associated with this instance. Note: Name is required"
+    },
+    "AnsibleRepository": {
+      "Type": "String",
+      "Default": "https://github.com/moffzilla/AWS-Fundamentals",
+      "Description": "The git repository of Ansible playbooks"
+    },
+    "AnsiblePlaybook": {
+      "Type": "String",
+      "Default": "CloudFormation/CF_Apache.yml",
+      "Description": "The Ansible playbook to use"
+    }
+  },
+  "Mappings": {
+      "RegionMap" : {
+          "us-west-2"      : { "AMI" : "ami-8803e0f0" }
+      }
+  },
+  "Resources": {
+    "Ec2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId":  {"Fn::FindInMap":["RegionMap", {"Ref" : "AWS::Region" }, "AMI" ]},
+        "InstanceType": { "Ref": "InstanceType" },
+        "KeyName": { "Ref": "KeyName" },
+        "SecurityGroups": [ { "Ref": "WebSecurityGroup" } ],
+        "UserData": {
+          "Fn::Base64": { "Fn::Join": [ "", [
+            "#!/bin/bash\n",
+            "sudo apt-get update -y\n",
+            "sudo apt-get install -y ansible git\n",
+            "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
+            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
+              ]
+            ]
+          }
+        }
+      }
+    },
+"NewVolume" : {
+      "Type" : "AWS::EC2::Volume",
+      "Properties" : {
+         "Size" : "1",
+         "AvailabilityZone" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ] }
+      }
+   },
+   "MountPoint" : {
+    "Type" : "AWS::EC2::VolumeAttachment",
+    "Properties" : {
+       "InstanceId" : { "Ref" : "Ec2Instance" },
+       "VolumeId"  : { "Ref" : "NewVolume" },
+       "Device" : "/dev/sdh"
+    }
+ },
+   
+    
+"WebSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable tcp access for Web and SSH traffic from outside",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "3389",
+            "ToPort": "3389",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "udp",
+            "FromPort": "3389",
+            "ToPort": "3389",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "InstanceId": {
+      "Description": "Instance ID of the Web Server",
+      "Value": {
+        "Ref": "Ec2Instance"
+      }
+    },
+    "AZ": {
+      "Description": "Instances is running in Availability Zone ",
+      "Value": {
+        "Fn::GetAtt": [
+          "Ec2Instance",
+          "AvailabilityZone"
+        ]
+      }
+    },
+    "PublicIP": {
+      "Description": "Public IP",
+      "Value": {
+        "Fn::GetAtt": [
+          "Ec2Instance",
+          "PublicIp"
+        ]
+      }
+    },
+    "PublicDNS": {
+      "Description": "Instance Public DNS Name",
+      "Value": {
+        "Fn::GetAtt": [
+          "Ec2Instance",
+          "PublicDnsName"
+        ]
+      }
+    }
+  }
+}
