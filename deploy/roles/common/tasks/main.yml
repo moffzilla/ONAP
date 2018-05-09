@@ -12,6 +12,7 @@
       name: "{{ item }}"
       state: present
   with_items:
+      - ansible
       - git
       - curl
       - unzip

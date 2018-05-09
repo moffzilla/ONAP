@@ -1,14 +1,14 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Template to launch an Ubuntu Linux instance running Apache.",
+  "Description": "Template to launch an Ubuntu Linux instance running ONAP in Docker Containers.",
   "Parameters": {
     "InstanceType": {
       "Type": "String",
-      "Default": "t2.micro",
+      "Default": "r4.2xlarge",
       "AllowedValues": [
-        "t2.micro"
+        "r4.2xlarge"
       ],
-      "Description": "Only default t2.micro will be allowed"
+      "Description": "Only default r4.2xlarge will be allowed"
     },
     "KeyName": {
       "Type": "String",
@@ -17,18 +17,18 @@
     },
     "AnsibleRepository": {
       "Type": "String",
-      "Default": "https://github.com/moffzilla/AWS-Fundamentals",
+      "Default": "https://github.com/moffzilla/ONAP",
       "Description": "The git repository of Ansible playbooks"
     },
     "AnsiblePlaybook": {
       "Type": "String",
-      "Default": "CloudFormation/CF_Apache.yml",
+      "Default": "deploy/ap_onap.yml",
       "Description": "The Ansible playbook to use"
     }
   },
   "Mappings": {
       "RegionMap" : {
-          "us-west-2"      : { "AMI" : "ami-8803e0f0" }
+          "us-east-1"      : { "AMI" : "ami-1d4e7a66" }
       }
   },
   "Resources": {
@@ -38,14 +38,14 @@
         "ImageId":  {"Fn::FindInMap":["RegionMap", {"Ref" : "AWS::Region" }, "AMI" ]},
         "InstanceType": { "Ref": "InstanceType" },
         "KeyName": { "Ref": "KeyName" },
-        "SecurityGroups": [ { "Ref": "WebSecurityGroup" } ],
+        "SecurityGroups": [ { "Ref": "OOONAP" } ],
         "UserData": {
           "Fn::Base64": { "Fn::Join": [ "", [
             "#!/bin/bash\n",
             "sudo apt-get update -y\n",
-            "sudo apt-get install -y ansible git\n",
-            "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
-            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
+            "#sudo apt-get install -y ansible git\n",
+            "#echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
+            "#sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
               ]
             ]
           }
@@ -69,33 +69,21 @@
  },
    
     
-"WebSecurityGroup": {
+"OOONAP": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Enable tcp access for Web and SSH traffic from outside",
         "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "3389",
-            "ToPort": "3389",
+            "FromPort": "0",
+            "ToPort": "65535",
             "CidrIp": "0.0.0.0/0"
           },
           {
             "IpProtocol": "udp",
-            "FromPort": "3389",
-            "ToPort": "3389",
+            "FromPort": "0",
+            "ToPort": "65535",
             "CidrIp": "0.0.0.0/0"
           }
         ]

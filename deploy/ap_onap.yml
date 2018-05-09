@@ -1,7 +1,7 @@
 ---
 #"Description" : "Ansible Playbook to Configure a Secondary HDD & Apache
 
-- name: Configure Secondary HDD & Configure Apache 
+- name: Configure Secondary HDD & Configure Docker 
   hosts: localhost
   gather_facts: False
   tasks:
@@ -20,136 +20,28 @@
 
     - name: Creates Apache Mount directory
       file: 
-        path: /mnt/html 
+        path: /mnt/docker 
         state: directory
         mode: "u=rwx,g=wx,o=rwx"
 
     - name: Mount New File System
-      shell: sudo mount /dev/xvdh1 /mnt/html 
+      shell: sudo mount /dev/xvdh1 /mnt/docker 
 
     - name: Make Mount Point Permanent
       shell: |
-        echo '/dev/xvdh1    /mnt/html    ext4    defaults    0    1' >> /etc/fstab
-      register: WelcomeApache
-
-    - name: Creates Apache Root directory
-      file: 
-        path: /mnt/html/www 
-        state: directory
-        mode: "u=rwx,g=wx,o=rwx"
+        echo '/dev/xvdh1    /mnt/docker    ext4    defaults    0    1' >> /etc/fstab
+      register: WelcomeONAP
 
     - name: Write Welcome Page
       shell: |
-        echo 'Hello AWS World' > /mnt/html/www/index.html
+        echo 'Hello AWS World' > /mnt/docker/docker.txt
       register: WelcomeApache
 
-    - git:
-        repo: 'https://github.com/moffzilla/AWS-Fundamentals.git'
-        dest: /mnt/html/AWS-Fundamentals
-        clone: yes
-        
-    - name: 'Install apt-transport-https'
-      apt:
-        name: 'apt-transport-https'
+#    - roles:
+#        - common 
+#        - docker
+#        - k8s
+#        - helm
+#        - oom
 
-    - name: 'Install ca-certificates'
-      apt:
-        name: 'ca-certificates'
-
-    - name: 'Install curl'
-      apt:
-        name: 'curl'
-
-    - name: 'Install software-properties-common'
-      apt:
-        name: 'software-properties-common'
-
-    - name: 'Add the docker apt signing key'
-      apt_key:
-        id: '0EBFCD88'
-        url: 'https://download.docker.com/linux/ubuntu/gpg'
-        state: 'present'
-      notify: 'docker-apt-get-update'
-
-    - name: 'Add the official docker repo'
-      apt_repository:
-        repo: 'deb https://download.docker.com/linux/ubuntu xenial stable'
-        state: 'present'
-      notify: 'docker-apt-get-update'
-
-    - meta: flush_handlers
-
-    - name: 'Install docker'
-      apt:
-        name: 'docker-ce'
-        state: 'latest'
-
-    - name: 'Start the docker service'
-      service:
-        name: 'docker'
-        state: 'started'
-        enabled: 'yes'
-
-    - name: Add Ubuntu user to Docker group
-      user: name=ubuntu groups=docker append=yes
-        
-#   - name: Deploy WebServer 
-#      command: docker run -dit --restart always --name my-apache-webserver -p 80:80 -v /mnt/html/www:/usr/local/apache2/htdocs/ moffzilla/httpd:v2.4
-
-    - name: Install docker-py
-#      command: pip install 'docker-py==1.7.0' --force-reinstall
-      become: yes
-      pip:
-        name: docker-py
-        version: 1.7.0
-        state: forcereinstall
-
-    - name: Pull the Apache Docker container
-      become: yes
-      docker_image:
-        name: "moffzilla/httpd"
-
-    - name: Create Apache container
-      become: yes
-      docker_container:
-        name: my-apache-webserver
-        image: "moffzilla/httpd"
-        restart_policy: always
-        volumes:
-        - /mnt/html/www:/usr/local/apache2/htdocs/ 
-        ports:
-          - "80:80"     
-
-
-#    - name: Transfer Apache Port Config  
-#      copy:
-#        src: httpd/ports.conf
-#        dest: /etc/apache2/
-#        owner: root
-#        group: root
-#        mode: 0777
-
-#    - name: Transfer Apache New Default Doc Root  
-#      copy:
-#        src: httpd/000-default.conf
-#        dest: /etc/apache2/sites-available/
-#        owner: root
-#        group: root
-#        mode: 0777
-
-#    - name: Transfer Apache Default Root  
-#      copy:
-#        src: httpd/apache2.conf
-#        dest: /etc/apache2/
-#        owner: root
-#        group: root
-#        mode: 0777
-
-#    - name: enabled mod_rewrite
-#      apache2_module: name=rewrite state=present
-#      notify:
-#        - restart apache2
-  
-#  handlers:
-#    - name: restart apache2
-#      service: name=apache2 state=restarted   
+    
