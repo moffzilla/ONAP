@@ -9,8 +9,8 @@
 
   roles:
     - common
-    - rancher 
-#    - docker
+    - docker
+    - rancher
 #    - k8s
 #    - helm
 #    - oom

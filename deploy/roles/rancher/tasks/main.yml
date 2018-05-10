@@ -7,11 +7,7 @@
     clone: yes
 
 - name: Clone Rancher Artifacts
-  become: yes
-  git:
-    repo: https://gerrit.onap.org/r/oom 
-    dest: /mnt/onap/oom
-    refspec: 'refs/changes/19/32019/6'
+  shell: 'cd /mnt/onap/oom && git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6'
     
 
 #git clone https://gerrit.onap.org/r/oom
