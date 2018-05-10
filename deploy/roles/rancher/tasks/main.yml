@@ -8,10 +8,60 @@
 
 - name: Clone Rancher Artifacts
   shell: 'cd /mnt/onap/oom && git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6 --commit --no-edit'
-    
 
+- name: Discover local IP
+  shell: ifconfig | grep -A 1 'ens3' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1
+  register: localip
+  ignore_errors: true
+
+- name: Deploy Rancher & Kubernetes
+  shell: sudo /mnt/onap/oom/install/rancher/oom_rancher_setup.sh -b master -s {{localip.stdout}} -e onap
+
+# When complete "kubectl cluster-info"
+# You can access https://{{localip.stdout}}:8880  --> Rancher GUI, Select ONAP Enviroment and K8 UI is available
+
+- name: Download ONAP Deployment Script
+  get_url:
+    url: https://jira.onap.org/secure/attachment/11584/cd.sh
+    dest: /mnt/onap/oom/cd.sh
+    mode: 0777
+
+- name: Download ONAP Deployment Script
+  get_url:
+    url: https://jira.onap.org/secure/attachment/ID/cd.sh
+    dest: /mnt/onap/oom/cd.sh
+    mode: 0777
+
+- name: Download AAI Certificate
+  get_url:
+    url: https://jira.onap.org/secure/attachment/ID/aaiapisimpledemoopenecomporg.cer
+    dest: /mnt/onap/oom/aaiapisimpledemoopenecomporg.cer
+
+- name: Download ONAP Parameter Template
+  get_url:
+    url: https://jira.onap.org/secure/attachment/1ID/onap-parameters.yaml
+    dest: /mnt/onap/oom/onap-parameters.yaml
+
+- name: Download AAI Cloud Region default
+  get_url:
+    url: https://jira.onap.org/secure/attachment/ID/aai-cloud-region-put.json
+    dest: /mnt/onap/oom/aai-cloud-region-put.json
+
+- name: Deploy ONAP
+  shell: sudo ./cd.sh -b master -e onap -c true -d true -w true -r true
+
+#Install Ranc
 #git clone https://gerrit.onap.org/r/oom
 #cd oom
 #git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6
 #cd install/rancher
-#
+#./oom_rancher_setup.sh -b master -s 10.12.5.168 -e onap
+#ip="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+
+#wget https://jira.onap.org/secure/attachment/ID/cd.sh
+#chmod 777 cd.sh
+#wget https://jira.onap.org/secure/attachment/ID/aaiapisimpledemoopenecomporg.cer
+#wget https://jira.onap.org/secure/attachment/1ID/onap-parameters.yaml
+#wget https://jira.onap.org/secure/attachment/ID/aai-cloud-region-put.json
+#./cd.sh -b master -n onap
+# wait about 25-60 min depending on the speed of your network pulling docker images
