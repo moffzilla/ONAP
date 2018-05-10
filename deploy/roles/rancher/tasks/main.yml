@@ -3,7 +3,7 @@
   become: yes
   git:
     repo: https://gerrit.onap.org/r/oom
-    dest: /mnt/onap/
+    dest: /mnt/onap/oom
     clone: yes
 
 - name: Clone Rancher Artifacts
