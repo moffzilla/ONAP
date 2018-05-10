@@ -8,7 +8,7 @@ Re-using roles and charts provided by zulcss.
 - This project has tested it in AWS Region: us-east-1
 - Please note that we mount an extra volume and use as default for Docker storage.
 - Make sure resources as the AMI image, SSH Keys, Security Groups referenced in the artifacts exist in the selected region.
-- This project defaults region US-West-2 (Oregon) & uses Ubuntu 16.04 guess OS.
+- This project defaults region US-West-1 (N. Virginia) & uses Ubuntu 16.04 guess OS.
 - You’ll need AWS CLI installed.
 - Before executing make sure you have access to AWS
     AWS_ACCESS_KEY_ID

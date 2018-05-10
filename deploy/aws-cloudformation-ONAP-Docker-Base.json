@@ -22,7 +22,7 @@
     },
     "AnsiblePlaybook": {
       "Type": "String",
-      "Default": "ONAP/deploy/ap_onap.yml",
+      "Default": "deploy/ap_onap.yml",
       "Description": "The Ansible playbook to use"
     }
   },
@@ -38,7 +38,7 @@
         "ImageId":  {"Fn::FindInMap":["RegionMap", {"Ref" : "AWS::Region" }, "AMI" ]},
         "InstanceType": { "Ref": "InstanceType" },
         "KeyName": { "Ref": "KeyName" },
-        "SecurityGroups": [ { "Ref": "WebSecurityGroup" } ],
+        "SecurityGroups": [ { "Ref": "dockerONAP" } ],
         "UserData": {
           "Fn::Base64": { "Fn::Join": [ "", [
             "#!/bin/bash\n",
@@ -69,7 +69,7 @@
  },
    
     
-"OOONAP": {
+"dockerONAP": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Enable tcp access for Web and SSH traffic from outside",
