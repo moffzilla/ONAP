@@ -4,7 +4,7 @@
   apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
-#  register_errors: add_k8s_key
+  register_errors: add_k8s_key
   ignore_errors: true
 
 
