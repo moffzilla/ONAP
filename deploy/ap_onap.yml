@@ -8,11 +8,12 @@
   remote_user: ubuntu
 
   roles:
-    - common 
-    - docker
-    - k8s
-    - helm
-    - oom
+    - common
+    - rancher 
+#    - docker
+#    - k8s
+#    - helm
+#    - oom
 
 
   

@@ -1,0 +1,21 @@
+---
+- name: Clone Rancher Artifacts
+  become: yes
+  git:
+    repo: https://gerrit.onap.org/r/oom
+    dest: /mnt/onap/
+    clone: yes
+
+- name: Clone Rancher Artifacts
+  become: yes
+  git:
+    repo: https://gerrit.onap.org/r/oom 
+    dest: /mnt/onap/oom
+    refspec: 'refs/changes/19/32019/6'
+    
+
+#git clone https://gerrit.onap.org/r/oom
+#cd oom
+#git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6
+#cd install/rancher
+#./oom_rancher_setup.sh -b master -s 10.12.5.168 -e onap
