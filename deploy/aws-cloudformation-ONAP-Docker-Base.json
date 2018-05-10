@@ -22,7 +22,7 @@
     },
     "AnsiblePlaybook": {
       "Type": "String",
-      "Default": "/home/ubuntu/ONAP/deploy/ap_onap.yml",
+      "Default": "ONAP/deploy/ap_onap.yml",
       "Description": "The Ansible playbook to use"
     }
   },
@@ -38,15 +38,14 @@
         "ImageId":  {"Fn::FindInMap":["RegionMap", {"Ref" : "AWS::Region" }, "AMI" ]},
         "InstanceType": { "Ref": "InstanceType" },
         "KeyName": { "Ref": "KeyName" },
-        "SecurityGroups": [ { "Ref": "OOONAP" } ],
+        "SecurityGroups": [ { "Ref": "WebSecurityGroup" } ],
         "UserData": {
           "Fn::Base64": { "Fn::Join": [ "", [
             "#!/bin/bash\n",
             "sudo apt-get update -y\n",
             "sudo apt-get install -y ansible git\n",
             "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
-            "sudo ansible-pull -U https://github.com/moffzilla/ONAP -d ONAP /home/ubuntu/ONAP/deploy/ap_onap.yml\n",
-            "#sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}, "-d" ," ",{"Ref": "AnsiblePlaybook"},"\n"
+            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
               ]
             ]
           }

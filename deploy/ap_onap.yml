@@ -14,39 +14,6 @@
     - helm
     - oom
 
-  tasks:
-#  sudo: yes   
-    - name: partition new disk
-      shell: /bin/echo -e "n\np\n1\n\n\nw" | sudo fdisk /dev/xvdh
 
-    - filesystem:
-        fstype: ext4
-        dev: /dev/xvdh1
-#        opts: -cc
-
-    - name: Creates New Docker ONAP Mount directory
-      file: 
-        path: /mnt/onap 
-        state: directory
-        mode: "u=rwx,g=wx,o=rwx"
-
-    - name: Mount New File System
-      shell: sudo mount /dev/xvdh1 /mnt/onap 
-
-    - name: Make Mount Point Permanent
-      shell: |
-        echo '/dev/xvdh1    /mnt/onap    ext4    defaults    0    1' >> /etc/fstab
-
-    - name: Stop Docker
-      shell: sudo service docker stop  
-    
-    - name: Move Default Docker image directory
-      shell: sudo mv /var/lib/docker /mnt/docker
-    
-    - name: Create Link
-      shell: sudo ln -s /mnt/docker /var/lib/docker
-
-    - name: Start Docker
-      shell: sudo service docker start
   
 
