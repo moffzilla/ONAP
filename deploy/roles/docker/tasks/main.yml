@@ -33,16 +33,19 @@
 
 - name: Creates New Docker ONAP Mount directory
   file: 
-    path: /mnt/onap 
+    path: /mnt
     state: directory
     mode: "u=rwx,g=wx,o=rwx"
 
 - name: Mount New File System
-  shell: sudo mount /dev/xvdh1 /mnt/onap 
+  shell: sudo mount /dev/xvdh1 /mnt
 
 - name: Make Mount Point Permanent
   shell: |
-    echo '/dev/xvdh1    /mnt/onap    ext4    defaults    0    1' >> /etc/fstab
+    echo '/dev/xvdh1    /mnt    ext4    defaults    0    1' >> /etc/fstab
+
+- name: Set ownership to Mount Point
+  shell: sudo chown -R ubuntu:ubuntu /mnt
 
 - name: Stop Docker
   shell: sudo service docker stop  

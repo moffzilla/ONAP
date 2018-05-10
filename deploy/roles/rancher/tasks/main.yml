@@ -7,11 +7,11 @@
     clone: yes
 
 - name: Clone Rancher Artifacts
-  shell: 'cd /mnt/onap/oom && git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6'
+  shell: 'cd /mnt/onap/oom && git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6 --commit --no-edit'
     
 
 #git clone https://gerrit.onap.org/r/oom
 #cd oom
 #git pull https://gerrit.onap.org/r/oom refs/changes/19/32019/6
 #cd install/rancher
-#./oom_rancher_setup.sh -b master -s 10.12.5.168 -e onap
+#
