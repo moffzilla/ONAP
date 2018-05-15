@@ -11,3 +11,10 @@
       repo: https://gitlab.com/zulcss/onap-deploy
       dest: /srv/onap-deploy
       clone: yes
+
+- name: Install demo template
+  become: yes
+  template:
+      src: "{{ config }}"
+      dest: /srv/oom/kubernetes/onap/values.yaml
+
