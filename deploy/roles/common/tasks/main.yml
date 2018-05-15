@@ -18,6 +18,11 @@
       - unzip
       - make
       - ca-certificates
+      - jq
+      - ipcalc
+      - python-dev
+      - python-pip
+      - python-yaml
 
 - name: Disable system swap
   shell: swapoff -a
