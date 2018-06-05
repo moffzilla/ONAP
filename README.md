@@ -34,7 +34,10 @@ You can replace the following default settings:
 	AnsibleRepository": https://github.com/moffzilla/ONAP.git"
 	
 	AnsiblePlaybook: "deploy/ap_onap.yml"
+
+ 	aws cloudformation create-stack --stack-name ONAP-stack --template-body file://$PWD/deploy/aws-cloudformation-ONAP-Docker-Base.json --parameters ParameterKey=AnsibleRepository,ParameterValue=https://github.com/moffzilla/onap-deploy.git ParameterKey=AnsiblePlaybook,ParameterValue=onap-deploy/blob/master/deploy/site.yaml
 	
+
 You can also create the stack at the CloudFormation Console
 
 Remove:
