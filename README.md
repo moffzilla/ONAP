@@ -40,6 +40,12 @@ You can replace the following default settings:
 
 You can also create the stack at the CloudFormation Console
 
+Display:
+
+	aws cloudformation describe-stacks --stack-name ONAP-stack
+
+You can see the public IP and FQDN
+
 Remove:
 
 	aws cloudformation delete-stack --stack-name ONAP-stack
@@ -68,3 +74,10 @@ To terminate any AWS Instance created (it requires you to have installed aws cli
        'aws ec2 describe-instances | grep InstanceId'
 
        'aws ec2 terminate-instances --instance-ids [i-id]'
+
+	
+  D) Retrieve Instance User Data
+        To retrieve user data from within a running instance, use the following URI:
+ 
+	'http://169.254.169.254/latest/user-data'
+
