@@ -34,10 +34,13 @@ You can replace the following default settings:
 	AnsibleRepository": https://github.com/moffzilla/ONAP.git"
 	
 	AnsiblePlaybook: "deploy/ap_onap.yml"
+  
+        OOMTemplate: "minimal.cfg.j2"
 
+Example:
+Please note this deploy OOM with customized K8 ( not Rancher ) using a different Repository and variables 
+	aws cloudformation create-stack --stack-name ONAP-stack --template-body file://$PWD/deploy/aws-cloudformation-ONAP-Docker-Base.json --parameters ParameterKey=AnsibleRepository,ParameterValue=https://github.com/moffzilla/onap-deploy.git ParameterKey=AnsiblePlaybook,ParameterValue=deploy/site.yaml ParameterKey=InstanceType,ParameterValue=r4.16xlarge ParameterKey=OOMTemplate,ParameterValue=minimal.cfg.j2
 
- 	aws cloudformation create-stack --stack-name ONAP-stack --template-body file://$PWD/deploy/aws-cloudformation-ONAP-Docker-Base.json --parameters ParameterKey=AnsibleRepository,ParameterValue=https://github.com/moffzilla/onap-deploy.git ParameterKey=AnsiblePlaybook,ParameterValue=deploy/site.yaml
-	
 
 You can also create the stack at the CloudFormation Console
 

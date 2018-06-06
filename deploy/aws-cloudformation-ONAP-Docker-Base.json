@@ -4,9 +4,11 @@
   "Parameters": {
     "InstanceType": {
       "Type": "String",
-      "Default": "r4.2xlarge",
+      "Default": "r4.16xlarge",
       "AllowedValues": [
-        "r4.2xlarge"
+        "r4.2xlarge",
+	"r4.16xlarge",
+	"g3.x4large"
       ],
       "Description": "Only default r4.2xlarge will be allowed"
     },
@@ -24,6 +26,11 @@
       "Type": "String",
       "Default": "deploy/ap_onap.yml",
       "Description": "The Ansible playbook to use"
+    },
+    "OOMTemplate": {
+      "Type": "String",
+      "Default": "test.cfg.j2",
+      "Description": "The OOM Template for deploying demo or minimal implementations"
     }
   },
   "Mappings": {
@@ -46,7 +53,8 @@
             "sudo apt-get update -y\n",
             "sudo apt-get install -y ansible git\n",
             "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
-            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n"
+            "# sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n",
+	    "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-e"," ","config=",{"Ref": "OOMTemplate"}," ",{"Ref": "AnsiblePlaybook"},"\n"
               ]
             ]
           }
@@ -56,7 +64,7 @@
 "NewVolume" : {
       "Type" : "AWS::EC2::Volume",
       "Properties" : {
-         "Size" : "128",
+         "Size" : "256",
          "AvailabilityZone" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ] }
       }
    },
