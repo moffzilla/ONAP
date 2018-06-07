@@ -8,7 +8,7 @@
       "AllowedValues": [
         "r4.2xlarge",
 	"r4.16xlarge",
-	"g3.x4large"
+	"g3.4xlarge"
       ],
       "Description": "Only default r4.2xlarge will be allowed"
     },
