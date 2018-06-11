@@ -86,3 +86,8 @@ To terminate any AWS Instance created (it requires you to have installed aws cli
  
 	'http://169.254.169.254/latest/user-data'
 
+  F) To run an specific Role independetly 
+
+	'sudo ansible-pull -U https://github.com/moffzilla/ONAP -e config=test.cfg.j2 deploy/roles/oom/tasks/main.yaml'
+
+
