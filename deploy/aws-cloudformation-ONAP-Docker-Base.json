@@ -55,7 +55,7 @@
             "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
 	    "echo \"log_path = /var/log/ansible.log\" >> /etc/ansible/ansible.cfg\n",
             "# sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n",
-	    "#sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-e"," ","config=",{"Ref": "OOMTemplate"}," ",{"Ref": "AnsiblePlaybook"}," ","-vvvv"," ","\n"
+	    "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-e"," ","config=",{"Ref": "OOMTemplate"}," ",{"Ref": "AnsiblePlaybook"}," ","-vvvv"," ","\n"
               ]
             ]
           }
