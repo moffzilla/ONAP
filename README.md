@@ -51,6 +51,24 @@ Display:
 
 You can see the public IP and FQDN
 
+Execute Script:
+
+	./runme.sh
+
+Wait for the script to complete.
+
+You could verify your deployment by (Please note it may take from 15 ~ 30 mins with minimal deployment depending on your compute resources ) :
+
+	helm list
+	                                                                            
+	helm status dev
+
+It shows the status of the charts and associated Pods and Containers
+
+	kubectl get pods --all-namespaces -o=wide
+
+It shows the status of Pods and Containers at Kubernetes level.
+
 Remove:
 
 	aws cloudformation delete-stack --stack-name ONAP-stack
