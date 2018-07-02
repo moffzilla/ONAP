@@ -53,9 +53,10 @@
             "sudo apt-get update -y\n",
             "sudo apt-get install -y ansible git\n",
             "echo \"localhost ansible_connection=local\" > /etc/ansible/hosts\n",
-	    "sudo sh -c 'sed -i -e 's/#log_path/log_path/g' /etc/ansible/ansible.cfg'\n",
-            "# sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ",{"Ref": "AnsiblePlaybook"},"\n",
-	    "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-e"," ","config=",{"Ref": "OOMTemplate"}," ",{"Ref": "AnsiblePlaybook"}," ","-vvvv"," ","\n"
+            "sudo sh -c 'sed -i -e 's/#log_path/log_path/g' /etc/ansible/ansible.cfg'\n",
+            "echo '#!/bin/bash -ex' >> /home/ubuntu/runme.sh\n",
+            "sudo chmod 777 /home/ubuntu/runme.sh && sudo chown ubuntu:ubuntu /home/ubuntu/runme.sh\n",
+            "sudo ansible-pull -U ", {"Ref": "AnsibleRepository"}," ","-e"," ","config=",{"Ref": "OOMTemplate"}," ",{"Ref": "AnsiblePlaybook"}," ","-vvvv"," ","\n"
               ]
             ]
           }
