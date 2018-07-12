@@ -19,7 +19,7 @@
     },
     "AnsibleRepository": {
       "Type": "String",
-      "Default": "https://github.com/moffzilla/ONAP",
+      "Default": "https://github.com/moffzilla/ONAP-deploy",
       "Description": "The git repository of Ansible playbooks"
     },
     "AnsiblePlaybook": {
