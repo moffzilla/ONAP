@@ -31,7 +31,7 @@ You can replace the following default settings:
 
 	KeyName": "generic-cloud-wk"
 	
-	AnsibleRepository": https://github.com/moffzilla/ONAP.git"
+	AnsibleRepository": https://github.com/moffzilla/ONAP-deploy.git"
 	
 	AnsiblePlaybook: "deploy/ap_onap.yml"
   
