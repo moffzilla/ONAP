@@ -49,7 +49,9 @@ Display:
 
 	aws cloudformation describe-stacks --stack-name ONAP-stack
 
-You can see the public IP and FQDN
+You can see the public IP and FQDN then ssh to it
+
+	ssh ubuntu@<server IP>
 
 Execute Script:
 
