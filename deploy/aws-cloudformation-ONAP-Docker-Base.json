@@ -24,7 +24,7 @@
     },
     "AnsiblePlaybook": {
       "Type": "String",
-      "Default": "deploy/ap_onap.yml",
+      "Default": "deploy/site.yaml",
       "Description": "The Ansible playbook to use"
     },
     "OOMTemplate": {
